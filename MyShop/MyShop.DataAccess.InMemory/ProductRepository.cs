@@ -12,7 +12,7 @@ namespace MyShop.DataAccess.InMemory
     public class ProductRepository
     {
         ObjectCache cache = MemoryCache.Default;
-        List<Product> products = new List<Product>;
+        List<Product> products = new List<Product>();
 
         public ProductRepository()
         {
@@ -37,11 +37,11 @@ namespace MyShop.DataAccess.InMemory
         //TODO: Use find method.
         public void Update(Product product)
         {
-            Product productToUpdate = products.Find(p => p.Id == product.Id);
+            int productToUpdateIdx = products.IndexOf(products.Find(p => p.Id == product.Id));
 
-            if (productToUpdate != null)
+            if (productToUpdateIdx != -1)
             {
-                productToUpdate = product;
+                products[productToUpdateIdx] = product;
             }
             else
             {

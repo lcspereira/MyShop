@@ -3,28 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MyShop.Core;
 using MyShop.Core.Models;
-using MyShop.Core.ViewModels;
 using MyShop.DataAccess.InMemory;
-
 
 namespace MyShop.WebUI.Controllers
 {
-    public class ProductManagerController : Controller
+    public class ProductCategoryManagerController : Controller
     {
-        ProductRepository context;
-        ProductCategoryRepository productCategories;
+        ProductCategoryRepository context;
 
-
-        public ProductManagerController()
+        public ProductCategoryManagerController()
         {
-            context = new ProductRepository();
-            productCategories = new ProductCategoryRepository();
+            context = new ProductCategoryRepository();
         }
         // GET: Product
         public ActionResult Index()
         {
-            List<Product> products = context.Collection().ToList();
+            List<ProductCategory> products = context.Collection().ToList();
             return View(products);
         }
 
@@ -37,26 +33,21 @@ namespace MyShop.WebUI.Controllers
         // GET: Product/Create
         public ActionResult Create()
         {
-            ProductManagerViewModel viewModel = new ProductManagerViewModel();
-
-            viewModel.Product = new Product();
-            viewModel.ProductCategories = productCategories.Collection();
-            return View(viewModel);
+            ProductCategory product = new ProductCategory();
+            return View(product);
         }
 
         // POST: Product/Create
         [HttpPost]
-        //TODO: INSERT ERROR. GET PRODUCT FROM VIEWMODEL
-        public ActionResult Create(ProductManagerViewModel viewModel)
+        public ActionResult Create(ProductCategory product)
         {
             if (!ModelState.IsValid)
             {
-                return View(viewModel);
+                return View(product);
             }
             else
             {
-
-                context.Insert(viewModel.Product);
+                context.Insert(product);
                 context.Commit();
 
                 return RedirectToAction("Index");
@@ -66,13 +57,12 @@ namespace MyShop.WebUI.Controllers
         // GET: Product/Edit/5
         public ActionResult Edit(string id)
         {
-            ProductManagerViewModel viewModel = new ProductManagerViewModel();
+            ProductCategory product;
 
             try
             {
-                viewModel.Product = context.Find(id);
-                viewModel.ProductCategories = productCategories.Collection();
-                return View(viewModel);
+                product = context.Find(id);
+                return View(product);
             }
             catch (Exception ex)
             {
@@ -82,15 +72,15 @@ namespace MyShop.WebUI.Controllers
 
         // POST: Product/Edit/5
         [HttpPost]
-        public ActionResult Edit(string id, ProductManagerViewModel viewModel)
+        public ActionResult Edit(string id, ProductCategory product)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
-                    return View(viewModel.Product);
+                    return View(product);
                 }
-                context.Update(viewModel.Product);
+                context.Update(product);
                 context.Commit();
                 return RedirectToAction("Index");
             }
@@ -103,7 +93,7 @@ namespace MyShop.WebUI.Controllers
         // GET: Product/Delete/5
         public ActionResult Delete(string id)
         {
-            Product product;
+            ProductCategory product;
             try
             {
                 product = context.Find(id);

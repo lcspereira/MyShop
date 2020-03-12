@@ -47,20 +47,19 @@ namespace MyShop.WebUI.Controllers
         // POST: Product/Create
         [HttpPost]
         //TODO: INSERT ERROR. GET PRODUCT FROM VIEWMODEL
-        public ActionResult Create(ProductManagerViewModel viewModel)
+        public ActionResult Create(Product product)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(viewModel);
-            }
-            else
-            {
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(product);
+            //}
+            //else
+            //{
+            context.Insert(product);
+            context.Commit();
 
-                context.Insert(viewModel.Product);
-                context.Commit();
-
-                return RedirectToAction("Index");
-            }
+            return RedirectToAction("Index");
+            //}
         }
 
         // GET: Product/Edit/5
@@ -82,15 +81,15 @@ namespace MyShop.WebUI.Controllers
 
         // POST: Product/Edit/5
         [HttpPost]
-        public ActionResult Edit(string id, ProductManagerViewModel viewModel)
+        public ActionResult Edit(string id, Product product)
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return View(viewModel.Product);
-                }
-                context.Update(viewModel.Product);
+                //if (!ModelState.IsValid)
+                //{
+                //    return View(product);
+                //}
+                context.Update(product);
                 context.Commit();
                 return RedirectToAction("Index");
             }

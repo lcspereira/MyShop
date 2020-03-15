@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Caching;
 using MyShop.Core.Models;
+using MyShop.Core.Contracts;
 
 namespace MyShop.DataAccess.InMemory
 {
     // Specifies that the generic type T must inherit from BaseEntity
-    public class InMemoryRepository<T> where T : BaseEntity
+    public class InMemoryRepository<T> : IRepository<T> where T : BaseEntity
     {
         ObjectCache cache = MemoryCache.Default;
         List<T> items;

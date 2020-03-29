@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -48,7 +49,7 @@ namespace MyShop.WebUI.Controllers
         // POST: Product/Create
         [HttpPost]
         //TODO: INSERT ERROR. GET PRODUCT FROM VIEWMODEL
-        public ActionResult Create(Product product)
+        public ActionResult Create(Product product, HttpPostedFileBase file)
         {
             //if (!ModelState.IsValid)
             //{
@@ -56,6 +57,12 @@ namespace MyShop.WebUI.Controllers
             //}
             //else
             //{
+
+            if (file != null)
+            {
+                product.Image = product.Id + Path.GetExtension(file.FileName);
+                file.SaveAs(Server.MapPath("//Content//ProductImages//") + product.Image);
+            }
             context.Insert(product);
             context.Commit();
 
@@ -82,7 +89,7 @@ namespace MyShop.WebUI.Controllers
 
         // POST: Product/Edit/5
         [HttpPost]
-        public ActionResult Edit(string id, Product product)
+        public ActionResult Edit(string id, Product product, HttpPostedFileBase file)
         {
             try
             {
@@ -90,6 +97,11 @@ namespace MyShop.WebUI.Controllers
                 //{
                 //    return View(product);
                 //}
+                if (file != null)
+                {
+                    product.Image = product.Id + Path.GetExtension(file.FileName);
+                    file.SaveAs(Server.MapPath("//Content//ProductImages//") + product.Image);
+                }
                 context.Update(product);
                 context.Commit();
                 return RedirectToAction("Index");
